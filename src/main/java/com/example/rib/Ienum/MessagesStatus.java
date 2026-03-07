@@ -1,6 +1,7 @@
-package com.example.rib.Imodel;
+package com.example.rib.Ienum;
 
 public enum MessagesStatus {
     READ,
     UNREAD
 }
+
