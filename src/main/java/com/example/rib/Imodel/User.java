@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -36,6 +37,12 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Token token;
 
+    @OneToMany(mappedBy = "user")
+    private List<Conversation> conversation;
+
+    @OneToMany(mappedBy = "sender")
+    private List<Messages> messages;
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id;}
     public String getEmail() { return email; }
@@ -50,4 +57,11 @@ public class User {
     public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
     public Token getToken() { return token; }
     public void setToken(Token token) { this.token = token; }
+    public List<Conversation> getConversation() { return conversation; }
+    public void setConversation(List<Conversation> conversation) { this.conversation = conversation; }
+
+    public List<Messages> getMessages() { return messages; }
+    public void setMessages(List<Messages> messages) { this.messages = messages; }
+
+
 }
