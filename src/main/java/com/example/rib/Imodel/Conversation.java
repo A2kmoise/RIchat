@@ -22,6 +22,9 @@ public class Conversation {
     @Column(name = "createdAt", nullable = false)
     @CreationTimestamp
     private Instant createdAt;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     @OneToMany(mappedBy = "conversation",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ConversationParticipants> conversationParticipants;
 
@@ -37,6 +40,8 @@ public class Conversation {
     public void setConversationParticipants(List<ConversationParticipants> conversationParticipants) {
         this.conversationParticipants = conversationParticipants;
     }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
 
 }
