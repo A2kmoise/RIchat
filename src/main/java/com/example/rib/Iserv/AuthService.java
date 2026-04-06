@@ -1,5 +1,6 @@
 package com.example.rib.Iserv;
 
+import com.example.rib.Idto.LoginRequest;
 import com.example.rib.Idto.RegisterRequest;
 import com.example.rib.Irepo.UsersRepository;
 import com.example.rib.Imodel.User;
@@ -34,5 +35,13 @@ public class AuthService {
         usersRepository.save(user);
 
         return "User registered successfully";
+    }
+
+    public String login(LoginRequest loginRequest){
+        if(!usersRepository.existsUserByEmail(loginRequest.getEmail())){
+            throw new RuntimeException("User doesn't exist");
+        }
+        // get token
+        return "Login successful";
     }
 }
