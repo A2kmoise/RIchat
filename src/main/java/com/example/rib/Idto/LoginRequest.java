@@ -3,22 +3,21 @@ package com.example.rib.Idto;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
+import org.jspecify.annotations.NonNull;
+
 
 @Data
+@Getter
+@Setter
 public class LoginRequest {
 
-    @Setter
-    @Getter
-    @NotNull
+    @NonNull
     private String email;
 
-    @Setter
-    @Getter
-    @NotNull
+    @NonNull
     private String password;
 
-    public LoginRequest(String email, String password){
+    public LoginRequest(@NonNull String email, @NonNull String password){
         this.email = email;
         this.password = password;
     }
