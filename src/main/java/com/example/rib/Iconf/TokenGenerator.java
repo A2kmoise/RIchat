@@ -25,7 +25,7 @@ public class TokenGenerator {
 
    public String tokenGenerate(String username){
          /*return JWTS*/
-   /* return Jwts.builder()
+   return Jwts.builder()
             .setSubject(username)
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60 *60))
@@ -33,7 +33,7 @@ public class TokenGenerator {
             .compact();
 }
 
-public boolean isTokenValid(String token, String username){
+/*public boolean isTokenValid(String token, String username){
         final String extractUsername = extractUsername(token);
         return (extractUsername.equals(username) && !isTokenExpired(token));
 }
