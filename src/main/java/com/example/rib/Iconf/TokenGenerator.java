@@ -33,7 +33,7 @@ public class TokenGenerator {
             .compact();
 }
 
-/*public boolean isTokenValid(String token, String username){
+public boolean isTokenValid(String token, String username){
         final String extractUsername = extractUsername(token);
         return (extractUsername.equals(username) && !isTokenExpired(token));
 }
@@ -42,7 +42,7 @@ public boolean isTokenExpired(String token){
         return getExpiration(token).before(new Date());
 }
 
-private Claims extractAllClaims(String token){
+/*private Claims extractAllClaims(String token){
         return  Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
