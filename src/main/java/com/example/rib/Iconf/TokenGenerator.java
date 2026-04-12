@@ -42,7 +42,7 @@ public boolean isTokenExpired(String token){
         return getExpiration(token).before(new Date());
 }
 
-/*private Claims extractAllClaims(String token){
+private Claims extractAllClaims(String token){
         return  Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
