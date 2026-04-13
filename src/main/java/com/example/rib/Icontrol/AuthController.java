@@ -54,4 +54,5 @@ public class AuthController {
     public String currentUser(){
         return "Current user details";
     }
+
 }
