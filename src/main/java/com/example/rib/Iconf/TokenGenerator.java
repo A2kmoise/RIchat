@@ -7,6 +7,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import java.util.function.Function;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class TokenGenerator {
     private final  String SECRET_KEY = "SECRETfirst";
 
