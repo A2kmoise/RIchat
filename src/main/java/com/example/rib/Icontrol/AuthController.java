@@ -1,15 +1,24 @@
 package com.example.rib.Icontrol;
 
+import com.example.rib.Idto.LoginRequest;
+import com.example.rib.Idto.RegisterRequest;
+import com.example.rib.Iserv.AuthService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth") // base path
 public class AuthController {
 
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
     // REGISTER
     @PostMapping("/register")
-    public String signUp(@RequestBody String body){
-        return "User registered";
+    public String signUp(@RequestBody RegisterRequest registerRequest){
+        return authService.register(registerRequest);
     }
 
     // VERIFY OTP
@@ -20,8 +29,8 @@ public class AuthController {
 
     // LOGIN
     @PostMapping("/login")
-    public String login(@RequestBody String body){
-        return "User logged in";
+    public String login(@RequestBody LoginRequest loginRequest){
+        return authService.login(loginRequest);
     }
 
     // RESEND OTP
