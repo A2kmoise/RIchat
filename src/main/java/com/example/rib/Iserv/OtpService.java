@@ -32,6 +32,30 @@ public class OtpService {
         return otpValue;
     }
 
+    public boolean verifyOtp(String email,String otpInput){
+         Otp otp = otpRepository.findTopByEmailOrderByCreatedAtDesc(email)
+        .orElseThrow(()-> new RuntimeException("Otp not exist"));
+// check if its used
+     if(otp.isUsed()){
+     throw new RuntimeException("Otp is used");
+      }
+        // check expiration
+        if (otp.getExpiresAt().isBefore(Instant.now())) {
+            throw new RuntimeException("OTP expired");
+        }
+
+        // check match
+        if (!otp.getOtp().equals(otpInput)) {
+            throw new RuntimeException("Invalid OTP");
+        }
+
+        // mark as used
+        otp.setUsed(true);
+        otpRepository.save(otp);
+
+        return true;
+    }
+
     public void sendOtp(String email, String otp ){
     }
 }
