@@ -1,5 +1,6 @@
 package com.example.rib.Iserv;
 
+import com.example.rib.Iconf.OtpGenerator;
 import com.example.rib.Idto.LoginRequest;
 import com.example.rib.Idto.RegisterRequest;
 import com.example.rib.Irepo.UsersRepository;
@@ -14,15 +15,21 @@ import java.util.Optional;
 public class AuthService {
 
     private final UsersRepository usersRepository;
+    private final OtpService otpService;
     private final PasswordEncoder passwordEncoder;
     private final TokenGenerator tokenGenerator;
+    private final OtpGenerator otpGenerator;
 
     public AuthService(UsersRepository usersRepository,
+                       OtpService otpService,
                        PasswordEncoder passwordEncoder,
-                       TokenGenerator tokenGenerator){
+                       TokenGenerator tokenGenerator,
+                       OtpGenerator otpGenerator){
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenGenerator = tokenGenerator;
+        this.otpGenerator = otpGenerator;
+        this.otpService = otpService;
     }
 
     public String register(RegisterRequest registerRequest){
@@ -41,7 +48,17 @@ public class AuthService {
         // save user
         usersRepository.save(user);
 
-        return tokenGenerator.tokenGenerate(user.getEmail());
+      //generate otp and save otp
+      String otp = otpService.generateAndSaveOtp(user.getEmail());
+
+      //send otp
+        otpService.sendOtp(user.getEmail(), otp);
+
+        return "Otp sent via email";
+    }
+
+    public String verifyOtp(){
+        return "Otp verified";
     }
 
     public String login(LoginRequest loginRequest){
