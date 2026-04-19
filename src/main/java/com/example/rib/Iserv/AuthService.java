@@ -57,9 +57,8 @@ public class AuthService {
         return "Otp sent via email";
     }
 
-    public String verifyOtp(String email, String otp){
-        otpService.verifyOtp(email, otp);
-        return "Otp verified";
+    public boolean verifyOtp(String email, String otp){
+         return  otpService.verifyOtp(email, otp);
 
     }
 
