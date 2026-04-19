@@ -49,7 +49,7 @@ public class AuthService {
         usersRepository.save(user);
 
       //generate otp and save otp
-      String otp = otpService.generateAndSaveOtp(user.getEmail());
+      String otp = otpService.generateSaveOtpAndSend(user.getEmail());
 
       //send otp
         otpService.sendOtp(user.getEmail(), otp);
