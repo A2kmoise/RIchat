@@ -19,4 +19,5 @@ logging.level.org.springframework.web=DEBUG
 #MAIL
 spring.mail.host=bsbdabvjdbhcavdvhasd
 spring.mail.port=8080
+spring.mail.username=moise
 spring.mail.password=wer45suw
