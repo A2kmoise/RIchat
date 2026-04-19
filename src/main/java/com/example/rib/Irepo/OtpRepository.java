@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface OtpRepository extends JpaRepository<Otp, String> {
     Optional<Otp> findTopByEmailOrderByCreatedAtDesc(String email);
+
+    void deleteByEmail(String email);
 }
