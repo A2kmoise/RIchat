@@ -30,7 +30,7 @@ public class AuthController {
 
     // VERIFY OTP
     @PostMapping("/verify-otp")
-    public String verify(@RequestParam String email,@RequestParam String otp){
+    public boolean verify(@RequestParam String email,@RequestParam String otp){
         return authService.verifyOtp(email, otp);
     }
 
