@@ -18,7 +18,7 @@ public class OtpService {
         this.otpGenerator = otpGenerator;
     }
 
-    public String generateAndSaveOtp(String email){
+    public String generateSaveOtpAndSend(String email){
         String otpValue = otpGenerator.generateOtp();
 
         Otp otp = new Otp();
