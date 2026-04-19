@@ -3,6 +3,9 @@ package com.example.rib.Iserv;
 import com.example.rib.Iconf.OtpGenerator;
 import com.example.rib.Imodel.Otp;
 import com.example.rib.Irepo.OtpRepository;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -11,14 +14,19 @@ import java.time.Instant;
 public class OtpService {
     private final OtpRepository otpRepository;
     private final OtpGenerator otpGenerator;
+    private final JavaMailSender javaMailSender;
 
     public OtpService(OtpRepository otpRepository,
-                      OtpGenerator otpGenerator){
+                      OtpGenerator otpGenerator,
+                      JavaMailSender javaMailSender){
         this.otpRepository = otpRepository;
         this.otpGenerator = otpGenerator;
+        this.javaMailSender = javaMailSender;
     }
 
     public String generateSaveOtpAndSend(String email){
+
+        otpRepository.deleteByEmail(email);
         String otpValue = otpGenerator.generateOtp();
 
         Otp otp = new Otp();
@@ -30,6 +38,14 @@ public class OtpService {
         otpRepository.save(otp);
 
         return otpValue;
+    }
+
+    public void sendOtp(String email, String otpValue){
+      SimpleMailMessage message = new SimpleMailMessage();
+      message.setTo(email);
+      message.setSubject("Your OTP code");
+      message.setText("Your OTP is: " + otpValue);
+      javaMailSender.send(message);
     }
 
     public boolean verifyOtp(String email,String otpInput){
@@ -56,6 +72,4 @@ public class OtpService {
         return true;
     }
 
-    public void sendOtp(String email, String otp ){
-    }
 }
