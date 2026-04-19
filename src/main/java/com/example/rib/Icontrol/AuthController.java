@@ -3,6 +3,9 @@ package com.example.rib.Icontrol;
 import com.example.rib.Idto.LoginRequest;
 import com.example.rib.Idto.RegisterRequest;
 import com.example.rib.Iserv.AuthService;
+import com.example.rib.Iserv.OtpService;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,9 +13,13 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final OtpService otpService;
+    private final JavaMailSender javaMailSender;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, OtpService otpService, JavaMailSender javaMailSender) {
         this.authService = authService;
+        this.otpService = otpService;
+        this.javaMailSender = javaMailSender;
     }
 
     // REGISTER
@@ -23,8 +30,8 @@ public class AuthController {
 
     // VERIFY OTP
     @PostMapping("/verify-otp")
-    public String verify(@RequestParam String otp){
-        return authService.verifyOtp();
+    public String verify(@RequestParam String email,@RequestParam String otp){
+        return authService.verifyOtp(email, otp);
     }
 
     // LOGIN
@@ -36,7 +43,13 @@ public class AuthController {
     // RESEND OTP
     @PostMapping("/resend-otp")
     public String resendOtp(@RequestParam String email){
-        return "OTP resent";
+        String otp = otpService.generateSaveOtpAndSend(email);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("OTP RESENT");
+        message.setText("Your OTP: " + otp);
+        javaMailSender.send(message);
+        return "OTP resent successfully";
     }
 
     // FORGOT PASSWORD
