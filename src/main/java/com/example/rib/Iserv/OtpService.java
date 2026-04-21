@@ -6,6 +6,7 @@ import com.example.rib.Irepo.OtpRepository;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -15,13 +16,15 @@ public class OtpService {
     private final OtpRepository otpRepository;
     private final OtpGenerator otpGenerator;
     private final JavaMailSender javaMailSender;
+    private final PasswordEncoder passwordEncoder;
 
     public OtpService(OtpRepository otpRepository,
                       OtpGenerator otpGenerator,
-                      JavaMailSender javaMailSender){
+                      JavaMailSender javaMailSender, PasswordEncoder passwordEncoder){
         this.otpRepository = otpRepository;
         this.otpGenerator = otpGenerator;
         this.javaMailSender = javaMailSender;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public String generateSaveOtpAndSend(String email){
@@ -29,9 +32,12 @@ public class OtpService {
         otpRepository.deleteByEmail(email);
         String otpValue = otpGenerator.generateOtp();
 
+        //Encoding otp before save for security purpose
+        String encodedOtp = passwordEncoder.encode(otpValue);
+
         Otp otp = new Otp();
         otp.setEmail(email);
-        otp.setOtp(otpValue);
+        otp.setOtp(encodedOtp);
         otp.setCreatedAt(Instant.now());
         otp.setExpiresAt(Instant.now().plusSeconds(300));
 
@@ -61,7 +67,7 @@ public class OtpService {
         }
 
         // check match
-        if (!otp.getOtp().equals(otpInput)) {
+        if (!passwordEncoder.matches(otpInput, otp.getOtp())) {
             throw new RuntimeException("Invalid OTP");
         }
 
