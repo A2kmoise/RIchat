@@ -63,7 +63,7 @@ public class AuthService {
     }
 
     public String login(LoginRequest loginRequest){
-        User user = Optional.ofNullable(usersRepository.findByEmail(loginRequest.getEmail()))
+        User user = usersRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("User doesn't exist"));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
@@ -71,5 +71,20 @@ public class AuthService {
         }
 
         return tokenGenerator.tokenGenerate(user.getEmail());
+    }
+
+    public String resetPassword(String email, String otp, String newPassword){
+
+
+        User user = usersRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("user doesn't exist"));
+        if(!otpService.verifyOtp(email, otp)){
+            throw new RuntimeException("OTP invalid or expired");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        usersRepository.save(user);
+
+        return "password reset success";
     }
 }
