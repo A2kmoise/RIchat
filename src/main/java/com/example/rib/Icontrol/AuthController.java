@@ -11,7 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth") // base path
+@RequestMapping("/richat-api/v1/auth") // base path
 public class AuthController {
 
     private final AuthService authService;
