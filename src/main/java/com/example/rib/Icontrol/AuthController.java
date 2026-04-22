@@ -72,7 +72,8 @@ public class AuthController {
     public String resetPassword(@RequestParam String email,
                                 @RequestParam String otp,
                                 @RequestParam String newPassword){
-        return "Password reset successful";
+
+        return authService.resetPassword(email, otp, newPassword);
     }
 
     // LOGOUT
