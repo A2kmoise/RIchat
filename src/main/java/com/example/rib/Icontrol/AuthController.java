@@ -55,7 +55,14 @@ public class AuthController {
     // FORGOT PASSWORD
     @PostMapping("/forgot-password")
     public String forgotPassword(@RequestParam String email){
+        String otp = otpService.generateSaveOtpAndSend(email);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Password reset OTP");
+        message.setText("Your OTP for password reset: " + otp);
+        javaMailSender.send(message);
         return "Password reset link sent";
+
     }
 
     // RESET PASSWORD
