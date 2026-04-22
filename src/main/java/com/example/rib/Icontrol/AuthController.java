@@ -61,13 +61,16 @@ public class AuthController {
         message.setSubject("Password reset OTP");
         message.setText("Your OTP for password reset: " + otp);
         javaMailSender.send(message);
-        return "Password reset link sent";
+
+        return "Password reset otp sent";
+        //Will use link method next
 
     }
 
     // RESET PASSWORD
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestParam String token,
+    public String resetPassword(@RequestParam String email,
+                                @RequestParam String otp,
                                 @RequestParam String newPassword){
         return "Password reset successful";
     }
