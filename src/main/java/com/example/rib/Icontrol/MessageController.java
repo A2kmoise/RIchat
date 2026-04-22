@@ -2,7 +2,7 @@ package com.example.rib.Icontrol;
 
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("/richat-api/v1/messages")
 public class MessageController {
 
     @PostMapping("/send-message")
