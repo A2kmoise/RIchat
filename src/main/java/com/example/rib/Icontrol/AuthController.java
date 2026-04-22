@@ -1,7 +1,9 @@
 package com.example.rib.Icontrol;
 
+import com.example.rib.Iconf.TokenGenerator;
 import com.example.rib.Idto.LoginRequest;
 import com.example.rib.Idto.RegisterRequest;
+import com.example.rib.Imodel.User;
 import com.example.rib.Iserv.AuthService;
 import com.example.rib.Iserv.OtpService;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,11 +17,13 @@ public class AuthController {
     private final AuthService authService;
     private final OtpService otpService;
     private final JavaMailSender javaMailSender;
+    private final TokenGenerator tokenGenerator;
 
-    public AuthController(AuthService authService, OtpService otpService, JavaMailSender javaMailSender) {
+    public AuthController(AuthService authService, OtpService otpService, JavaMailSender javaMailSender, TokenGenerator tokenGenerator) {
         this.authService = authService;
         this.otpService = otpService;
         this.javaMailSender = javaMailSender;
+        this.tokenGenerator = tokenGenerator;
     }
 
     // REGISTER
@@ -84,8 +88,11 @@ public class AuthController {
 
     // GET CURRENT USER (example protected endpoint)
     @GetMapping("/me")
-    public String currentUser(){
-        return "Current user details";
+    public User currentUser(@RequestHeader("Authorisation") String header){
+        String token = header.substring(7); //Bearer removed
+
+        String email = tokenGenerator.extractUsername(token);
+        return authService.me(email);
     }
 
 }
