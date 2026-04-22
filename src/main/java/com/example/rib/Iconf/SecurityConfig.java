@@ -1,5 +1,46 @@
 package com.example.rib.Iconf;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
+
+    //JWT FILTER
+     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter){
+         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+     }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v1/api-docs"
+                        ).permitAll()
+                        .requestMatchers("/richat-api/v1/auth/**").permitAll()
+                        .requestMatchers("/richat-api/v1/messages/**").authenticated()
+                        .requestMatchers("/richat-api/v1/profile/**").authenticated()
+                        .anyRequest().authenticated()
+
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
+               // .addFilterBefore();
+return http.build();
+    }
 
 }
