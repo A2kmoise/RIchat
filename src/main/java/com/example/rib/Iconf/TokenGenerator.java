@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 public class TokenGenerator {
     private final  String SECRET_KEY = "SECRETfirst";
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
+    /*public String extractUsername(String token) {return extractClaim(token, Claims::getSubject);}*/
+
+    public String extractEmail(String token) {return extractClaim(token, Claims::getSubject );}
 
     public Date getExpiration(String token){
         return extractClaim(token, Claims::getExpiration);
@@ -26,10 +26,10 @@ public class TokenGenerator {
         return  resolver.apply(claims);
     }
 
-   public String tokenGenerate(String username){
+   public String tokenGenerate(String email){
          /*return JWTS*/
    return Jwts.builder()
-            .setSubject(username)
+            .setSubject(email) //can even put username
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60 *60))
             .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
@@ -37,7 +37,7 @@ public class TokenGenerator {
 }
 
 public boolean isTokenValid(String token, String username){
-        final String extractUsername = extractUsername(token);
+        final String extractUsername = extractEmail(token);
         return (extractUsername.equals(username) && !isTokenExpired(token));
 }
 
