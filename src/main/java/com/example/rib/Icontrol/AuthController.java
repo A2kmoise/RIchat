@@ -91,7 +91,7 @@ public class AuthController {
     public User currentUser(@RequestHeader("Authorisation") String header){
         String token = header.substring(7); //Bearer removed
 
-        String email = tokenGenerator.extractUsername(token);
+        String email = tokenGenerator.extractEmail(token);
         return authService.me(email);
     }
 
