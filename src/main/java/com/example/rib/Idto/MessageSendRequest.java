@@ -11,4 +11,7 @@ public class MessageSendRequest {
 
     @NonNull
     private String id;
+
+    @NonNull
+    private String conversationId;
 }
