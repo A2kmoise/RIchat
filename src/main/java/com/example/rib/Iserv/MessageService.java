@@ -57,8 +57,15 @@ public class MessageService {
     //====================================================
     //updating messages
     //====================================================
-    public String updateMessages(){
-        return "message updated";
+    public Messages updateMessages(String messageId, String userId, String newContent){
+        Messages messages  = messagesRepository.findById(messageId)
+                .orElseThrow(() -> new RuntimeException("message not found"));
+
+        if(!messages.getSender().getId().equals(userId)){
+            throw new RuntimeException("Access denied");
+        }
+        messages.setContent(newContent);
+        return messagesRepository.save(messages);
     }
 
 
