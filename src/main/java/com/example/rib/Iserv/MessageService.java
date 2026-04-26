@@ -72,8 +72,15 @@ public class MessageService {
     //====================================================
     //deleting messages
     //====================================================
-    public String deleteMessages(){
-        return "message deleted";
+    public void deleteMessages(String messageId, String userId){
+        Messages messages = messagesRepository.findById(messageId)
+                .orElseThrow(()-> new RuntimeException("message not found"));
+
+        if(!messages.getSender().getId().equals(userId)){
+            throw new RuntimeException("Access denied");
+        }
+
+        messagesRepository.delete(messages);
     }
 
 }
