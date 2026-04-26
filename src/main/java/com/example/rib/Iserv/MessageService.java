@@ -6,8 +6,10 @@ import com.example.rib.Imodel.User;
 import com.example.rib.Irepo.ConversationRepository;
 import com.example.rib.Irepo.MessagesRepository;
 import com.example.rib.Irepo.UsersRepository;
+import jakarta.mail.MessageAware;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,8 +47,11 @@ public class MessageService {
     //====================================================
     //reading messages
     //====================================================
-    public String fetchMessages(){
-        return "all messages";
+    public List<Messages> fetchMessages(String conversationId){
+         Conversation conversation = conversationRepository.findById(conversationId)
+        .orElseThrow(() -> new RuntimeException ("user not found"));
+
+          return messagesRepository.findByConversationIdOrderByCreatedAtAsc(conversationId);
     }
 
     //====================================================
