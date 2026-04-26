@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/richat-api/v1/profile")
 public class ProfileController {
 
-    @PutMapping("/update-profile")
+    @PutMapping("/profile")
     public void updateProfile(){}
 
-    @PutMapping("/update-password")
+    @PutMapping("/password")
     public void updatePassword(){}
 }
