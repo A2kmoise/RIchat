@@ -1,20 +1,53 @@
 package com.example.rib.Icontrol;
 
+import com.example.rib.Imodel.Messages;
+import com.example.rib.Iserv.MessageService;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/richat-api/v1/messages")
+import java.util.List;
+
+@RestController
+@RequestMapping("/richat-api/v1/messages")
 public class MessageController {
 
+    private final MessageService messageService;
+
+    public MessageController(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
     @PostMapping("/send-message")
-    public void sendMessage(){}
+    public Messages sendMessage(
+            @RequestParam String userId,
+            @RequestParam String conversationId,
+            @RequestParam String content
+    ){
+        return messageService.sendMessage(userId,conversationId,content);
+    }
 
     @GetMapping("/fetch-message")
-    public void fetchMessage(){}
+    public List<Messages> fetchMessage(
+            @RequestParam String conversationId
+    ){
+        return messageService.fetchMessages(conversationId);
+    }
 
     @PutMapping("/update-message")
-    public void updateMessage(){}
+    public Messages updateMessage(
+            @RequestParam String userId,
+            @RequestParam String conversationId,
+            @RequestParam String newContent
+    ){
+        return messageService.updateMessages(userId, conversationId, newContent);
+    }
     @DeleteMapping("/delete-message")
-    public void deleteMessage(){}
+    public String deleteMessage(
+            @RequestParam String userId,
+            @RequestParam String conversationId
+    ){
+        messageService.deleteMessages(userId, conversationId);
+        return "message deleted";
+    }
 
 
 }
