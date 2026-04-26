@@ -1,5 +1,6 @@
 package com.example.rib.Icontrol;
 
+import com.example.rib.Idto.MessageSendRequest;
 import com.example.rib.Imodel.Messages;
 import com.example.rib.Iserv.MessageService;
 import org.springframework.web.bind.annotation.*;
@@ -16,23 +17,25 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @PostMapping("/send-message")
+    @PostMapping("/message")
     public Messages sendMessage(
-            @RequestParam String userId,
-            @RequestParam String conversationId,
-            @RequestParam String content
-    ){
-        return messageService.sendMessage(userId,conversationId,content);
+            @RequestBody MessageSendRequest sendRequest
+            ){
+        return messageService.sendMessage(
+                sendRequest.getId(),
+                sendRequest.getConversationId(),
+                sendRequest.getContent()
+        );
     }
 
-    @GetMapping("/fetch-message")
+    @GetMapping("/message")
     public List<Messages> fetchMessage(
             @RequestParam String conversationId
     ){
         return messageService.fetchMessages(conversationId);
     }
 
-    @PutMapping("/update-message")
+    @PutMapping("/message")
     public Messages updateMessage(
             @RequestParam String userId,
             @RequestParam String conversationId,
@@ -40,7 +43,7 @@ public class MessageController {
     ){
         return messageService.updateMessages(userId, conversationId, newContent);
     }
-    @DeleteMapping("/delete-message")
+    @DeleteMapping("/message")
     public String deleteMessage(
             @RequestParam String userId,
             @RequestParam String conversationId
