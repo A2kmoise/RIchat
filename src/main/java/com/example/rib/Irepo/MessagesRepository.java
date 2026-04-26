@@ -4,6 +4,8 @@ import com.example.rib.Imodel.Messages;
 import org.hibernate.boot.models.JpaAnnotations;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MessagesRepository extends JpaRepository<Messages, String> {
+import java.util.List;
 
+public interface MessagesRepository extends JpaRepository<Messages, String> {
+    List<Messages> findByConversationIdOrderByCreatedAtAsc(String conversationId);
 }
