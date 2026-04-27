@@ -31,10 +31,10 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/v1/api-docs"
                         ).permitAll()
-                        .requestMatchers("/richat-api/v1/auth/**").permitAll()
-                        .requestMatchers("/richat-api/v1/messages/**").authenticated()
-                        .requestMatchers("/richat-api/v1/profile/**").authenticated()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/richat/api/v1/auth/**").permitAll()
+                        .requestMatchers("/richat/api/v1/messages/**").authenticated()
+                        .requestMatchers("/richat/api/v1/profile/**").authenticated()
+                        .anyRequest().permitAll() // Temporarily permit all to see if 403 persists
 
                 )
                 .sessionManagement(session -> session
