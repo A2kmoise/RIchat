@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/richat-api/v1/messages")
+@RequestMapping("/richat/api/v1/messages")
 public class MessageController {
 
     private final MessageService messageService;
