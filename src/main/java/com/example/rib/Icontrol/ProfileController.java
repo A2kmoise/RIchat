@@ -4,7 +4,7 @@ import com.example.rib.Iserv.ProfileService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/richat-api/v1/profile")
+@RequestMapping("/richat/api/v1/profile")
 public class ProfileController {
 
     private final ProfileService profileService;
