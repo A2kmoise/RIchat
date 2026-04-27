@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TokenGenerator {
-    private final  String SECRET_KEY = "SECRETfirst";
+    private final  String SECRET_KEY = "ThisIsAVerySecureSecretKeyForJwtAuthentication123456789";
 
     /*public String extractUsername(String token) {return extractClaim(token, Claims::getSubject);}*/
 
