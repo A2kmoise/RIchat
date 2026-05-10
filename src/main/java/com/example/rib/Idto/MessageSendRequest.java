@@ -26,4 +26,5 @@ public class MessageSendRequest {
         this.id = id;
         this.conversationId = conversationId;
     }
+
 }
