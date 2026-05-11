@@ -1,13 +1,14 @@
 package com.example.rib.Iserv;
 
+import com.example.rib.Ienum.ConversationType;
 import com.example.rib.Imodel.Conversation;
 import com.example.rib.Imodel.ConversationParticipants;
 import com.example.rib.Imodel.Messages;
 import com.example.rib.Imodel.User;
+import com.example.rib.Irepo.ConversationParticipantsRepository;
 import com.example.rib.Irepo.ConversationRepository;
 import com.example.rib.Irepo.MessagesRepository;
 import com.example.rib.Irepo.UsersRepository;
-import jakarta.mail.MessageAware;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +19,16 @@ public class MessageService {
     private final MessagesRepository messagesRepository;
     private final UsersRepository usersRepository;
     private final ConversationRepository conversationRepository;
+    private final ConversationParticipantsRepository conversationParticipantsRepository;
 
-    public MessageService(MessagesRepository messagesRepository, UsersRepository usersRepository, ConversationRepository conversationRepository){
+    public MessageService(MessagesRepository messagesRepository,
+                          UsersRepository usersRepository,
+                          ConversationRepository conversationRepository,
+                          ConversationParticipantsRepository conversationParticipantsRepository) {
         this.messagesRepository = messagesRepository;
         this.usersRepository = usersRepository;
         this.conversationRepository = conversationRepository;
+        this.conversationParticipantsRepository = conversationParticipantsRepository;
     }
 
 
@@ -34,7 +40,7 @@ public class MessageService {
             .orElseThrow(() -> new RuntimeException("user not found"));
 
     Optional<Conversation> existingConversation = conversationRepository.findPrivateConversationBetweenUsers(
-            senderId, receiverId, conversationType.PRIVATE
+            senderId, receiverId, ConversationType.PRIVATE
     );
 
     if (existingConversation.isPresent()){
@@ -47,7 +53,7 @@ public class MessageService {
 
         Conversation conversation = new Conversation();
 
-    conversation.setConversationType(conversationType.PRIVATE);
+    conversation.setConversationType(ConversationType.PRIVATE);
 
     conversation.setUser(sender);
 
@@ -84,10 +90,7 @@ public class MessageService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Conversation conversation = conversationRepository.findById(conversationId)
-                .orElseGet(() -> {
-                    Conversation newConversation = new Conversation();
-                    return conversationRepository.save(newConversation);
-                });
+                .orElseThrow(() -> new RuntimeException("Conversation not found"));
 
         Messages message = new Messages();
         message.setContent(content);
