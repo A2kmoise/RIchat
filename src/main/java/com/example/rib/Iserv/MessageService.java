@@ -23,6 +23,11 @@ public class MessageService {
         this.usersRepository = usersRepository;
         this.conversationRepository = conversationRepository;
     }
+
+
+    public Conversation findOrCreateConversation(senderId, receiverId){
+
+    }
     //====================================================
     //creating message
     //====================================================
