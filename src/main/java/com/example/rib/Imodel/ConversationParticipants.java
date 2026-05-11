@@ -27,7 +27,7 @@ public class ConversationParticipants {
 
     // ── Getters & Setters ──────────────────────────────────────────────────────
 
-    /*public String getId() { return id; }
+    public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
     public Conversation getConversation() { return conversation; }
@@ -37,6 +37,6 @@ public class ConversationParticipants {
     public void setUser(User user) { this.user = user; }
 
     public Instant getJoinedAt() { return joinedAt; }
-    public void setJoinedAt(Instant joinedAt) { this.joinedAt = joinedAt; }*/
+    public void setJoinedAt(Instant joinedAt) { this.joinedAt = joinedAt; }
 }
 
