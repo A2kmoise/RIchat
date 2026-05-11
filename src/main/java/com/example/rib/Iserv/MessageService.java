@@ -1,6 +1,7 @@
 package com.example.rib.Iserv;
 
 import com.example.rib.Imodel.Conversation;
+import com.example.rib.Imodel.ConversationParticipants;
 import com.example.rib.Imodel.Messages;
 import com.example.rib.Imodel.User;
 import com.example.rib.Irepo.ConversationRepository;
@@ -31,6 +32,49 @@ public class MessageService {
 
     User receiver = usersRepository.findById(receiverId)
             .orElseThrow(() -> new RuntimeException("user not found"));
+
+    Optional<Conversation> existingConversation = conversationRepository.findPrivateConversationBetweenUsers(
+            senderId, receiverId, conversationType.PRIVATE
+    );
+
+    if (existingConversation.isPresent()){
+        return existingConversation.get();
+    }
+
+        //======================================================
+        // Creating conversation
+        //======================================================
+
+        Conversation conversation = new Conversation();
+
+    conversation.setConversationType(conversationType.PRIVATE);
+
+    conversation.setUser(sender);
+
+        Conversation savedConversation =
+                conversationRepository.save(conversation);
+
+        ConversationParticipants senderParticipant =
+                new ConversationParticipants();
+
+        senderParticipant.setConversation(savedConversation);
+        senderParticipant.setUser(sender);
+        // add receiver participant
+        //====================================================
+        ConversationParticipants receiverParticipant =
+                new ConversationParticipants();
+
+        receiverParticipant.setConversation(savedConversation);
+        receiverParticipant.setUser(receiver);
+
+        //====================================================
+        // save participants
+        //====================================================
+        conversationParticipantsRepository.save(senderParticipant);
+
+        conversationParticipantsRepository.save(receiverParticipant);
+
+        return savedConversation;
     }
     //====================================================
     //creating message
