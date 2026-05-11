@@ -25,8 +25,12 @@ public class MessageService {
     }
 
 
-    public Conversation findOrCreateConversation(senderId, receiverId){
+    public Conversation findOrCreateConversation(String senderId,String receiverId){
+    User sender = usersRepository.findById(senderId)
+            .orElseThrow(()->new RuntimeException("user not found"));
 
+    User receiver = usersRepository.findById(receiverId)
+            .orElseThrow(() -> new RuntimeException("user not found"));
     }
     //====================================================
     //creating message
