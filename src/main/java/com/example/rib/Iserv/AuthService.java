@@ -44,6 +44,7 @@ public class AuthService {
         user.setEmail(registerRequest.getEmail());
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setVerified(false);
 
         // save user
         usersRepository.save(user);
@@ -57,6 +58,9 @@ public class AuthService {
         return "Otp sent via email";
     }
 
+    public boolean verifyEmail(String email, String otp){
+        User user = usersRepository.findByEmail()
+    }
     public boolean verifyOtp(String email, String otp){
          return  otpService.verifyOtp(email, otp);
 
