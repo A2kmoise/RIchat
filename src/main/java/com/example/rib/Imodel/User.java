@@ -26,6 +26,8 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "verified", nullable = false)
+
     @CreationTimestamp
     @Column(name = "createdAt")
     private Instant createdAt;
