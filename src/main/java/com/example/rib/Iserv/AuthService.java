@@ -57,7 +57,7 @@ public class AuthService {
     public void verifyEmail(String email, String otp){
         User user = usersRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not exist"));
-
+         otpService.verifyOtp(email, otp);
         user.setVerified(true);
     }
     public boolean verifyOtp(String email, String otp){
