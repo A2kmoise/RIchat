@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -66,7 +65,7 @@ public class User {
     public List<Messages> getMessages() { return messages; }
     public void setMessages(List<Messages> messages) { this.messages = messages; }
 
-    public void setverified(boolean verified){ this.verified = verified; }
+    public void setVerified(boolean verified){ this.verified = verified; }
     public boolean isVerified(){return  verified; }
 
 }
