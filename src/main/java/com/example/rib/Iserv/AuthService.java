@@ -1,6 +1,5 @@
 package com.example.rib.Iserv;
 
-import com.example.rib.Iconf.OtpGenerator;
 import com.example.rib.Idto.LoginRequest;
 import com.example.rib.Idto.RegisterRequest;
 import com.example.rib.Irepo.UsersRepository;
@@ -9,7 +8,6 @@ import com.example.rib.Iconf.TokenGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -18,17 +16,15 @@ public class AuthService {
     private final OtpService otpService;
     private final PasswordEncoder passwordEncoder;
     private final TokenGenerator tokenGenerator;
-    private final OtpGenerator otpGenerator;
 
     public AuthService(UsersRepository usersRepository,
                        OtpService otpService,
                        PasswordEncoder passwordEncoder,
-                       TokenGenerator tokenGenerator,
-                       OtpGenerator otpGenerator){
+                       TokenGenerator tokenGenerator
+                      ){
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenGenerator = tokenGenerator;
-        this.otpGenerator = otpGenerator;
         this.otpService = otpService;
     }
 
@@ -58,8 +54,11 @@ public class AuthService {
         return "Otp sent via email";
     }
 
-    public boolean verifyEmail(String email, String otp){
-        User user = usersRepository.findByEmail()
+    public void verifyEmail(String email, String otp){
+        User user = usersRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not exist"));
+
+        user.setVerified(true);
     }
     public boolean verifyOtp(String email, String otp){
          return  otpService.verifyOtp(email, otp);
