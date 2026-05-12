@@ -66,6 +66,10 @@ public class AuthService {
         User user = usersRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("User doesn't exist"));
 
+        if(!user.isVerified()){
+            throw new RuntimeException("user not verified");
+        }
+
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
