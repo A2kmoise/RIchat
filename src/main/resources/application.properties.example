@@ -21,3 +21,7 @@ spring.mail.host=bsbdabvjdbhcavdvhasd
 spring.mail.port=8080
 spring.mail.username=moise
 spring.mail.password=wer45suw
+
+#SWAGGER
+springdoc.swagger-ui.path=/swagger-ui
+springdoc.api-docs.enabled=true #should be disabled in production
