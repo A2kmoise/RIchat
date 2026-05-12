@@ -27,6 +27,7 @@ public class User {
     private String password;
 
     @Column(name = "verified", nullable = false)
+    private  Boolean isverified;
 
     @CreationTimestamp
     @Column(name = "createdAt")
@@ -65,5 +66,7 @@ public class User {
     public List<Messages> getMessages() { return messages; }
     public void setMessages(List<Messages> messages) { this.messages = messages; }
 
+    public void setIsverified(){ this.isverified = true; }
+    public boolean isVerified(){return  isverified; }
 
 }
