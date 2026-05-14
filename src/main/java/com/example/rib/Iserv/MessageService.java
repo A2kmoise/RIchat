@@ -106,7 +106,7 @@ public class MessageService {
     //====================================================
     public List<Messages> fetchMessages(String conversationId){
          Conversation conversation = conversationRepository.findById(conversationId)
-        .orElseThrow(() -> new RuntimeException ("user not found"));
+        .orElseThrow(() -> new RuntimeException ("conversation not found"));
 
           return messagesRepository.findByConversationIdOrderByCreatedAtAsc(conversationId);
     }
