@@ -3,8 +3,11 @@ package com.example.rib.Iserv;
 import com.example.rib.Iconf.OtpGenerator;
 import com.example.rib.Imodel.Otp;
 import com.example.rib.Irepo.OtpRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,10 +20,12 @@ public class OtpService {
     private final OtpGenerator otpGenerator;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
+    private static final Logger logger = LoggerFactory.getLogger(OtpService.class);
 
     public OtpService(OtpRepository otpRepository,
                       OtpGenerator otpGenerator,
-                      JavaMailSender javaMailSender, PasswordEncoder passwordEncoder){
+                      @Autowired(required = false) JavaMailSender javaMailSender, 
+                      PasswordEncoder passwordEncoder){
         this.otpRepository = otpRepository;
         this.otpGenerator = otpGenerator;
         this.javaMailSender = javaMailSender;
@@ -47,6 +52,10 @@ public class OtpService {
     }
 
     public void sendOtp(String email, String otpValue){
+      if (javaMailSender == null) {
+          logger.warn("Email service is disabled. OTP for {} is: {}", email, otpValue);
+          return;
+      }
       SimpleMailMessage message = new SimpleMailMessage();
       message.setTo(email);
       message.setSubject("Your OTP code");
