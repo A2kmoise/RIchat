@@ -8,6 +8,8 @@ import com.example.rib.Iserv.AuthService;
 import com.example.rib.Iserv.OtpService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,10 @@ public class AuthController {
     private final JavaMailSender javaMailSender;
     private final TokenGenerator tokenGenerator;
 
-    public AuthController(AuthService authService, OtpService otpService, JavaMailSender javaMailSender, TokenGenerator tokenGenerator) {
+    public AuthController(AuthService authService, 
+                          OtpService otpService, 
+                          @Autowired(required = false) JavaMailSender javaMailSender, 
+                          TokenGenerator tokenGenerator) {
         this.authService = authService;
         this.otpService = otpService;
         this.javaMailSender = javaMailSender;
@@ -31,6 +36,7 @@ public class AuthController {
     // REGISTER
     @Operation(summary = "user registration", description = "User registers with email and password")
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     public String signUp(@RequestBody RegisterRequest registerRequest){
         return authService.register(registerRequest);
     }
@@ -54,11 +60,7 @@ public class AuthController {
     @PostMapping("/resend-otp")
     public String resendOtp(@RequestParam String email){
         String otp = otpService.generateSaveOtpAndSend(email);
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("OTP RESENT");
-        message.setText("Your OTP: " + otp);
-        javaMailSender.send(message);
+        otpService.sendOtp(email, otp);
         return "OTP resent successfully";
     }
 
@@ -67,16 +69,10 @@ public class AuthController {
     @PostMapping("/forgot-password")
     public String forgotPassword(@RequestParam String email){
         String otp = otpService.generateSaveOtpAndSend(email);
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("Password reset OTP");
-        message.setText("Your OTP for password reset: " + otp);
-        javaMailSender.send(message);
-
+        otpService.sendOtp(email, otp);
         return "Password reset otp sent";
-        //Will use link method next
-
     }
+    //Will use link method next
 
     // RESET PASSWORD
     @Operation(summary = "real api to write new password", description = "here you type new password after otp verification and your password resets")
