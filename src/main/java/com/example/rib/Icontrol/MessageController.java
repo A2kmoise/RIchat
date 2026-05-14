@@ -5,10 +5,10 @@ import com.example.rib.Imodel.Messages;
 import com.example.rib.Iserv.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Scanner;
 
 @Tag(name="messages")
 @RestController
@@ -23,6 +23,7 @@ public class MessageController {
 
     @Operation(summary = "Sending messages", description ="Like creating a message to another user")
     @PostMapping("/message")
+    @ResponseStatus(HttpStatus.CREATED)
     public Messages sendMessage(
             @RequestBody MessageSendRequest sendRequest
             ){
@@ -44,20 +45,20 @@ public class MessageController {
     @Operation(summary = "update message", description = "User update their messages")
     @PutMapping("/message")
     public Messages updateMessage(
+            @RequestParam String messageId,
             @RequestParam String userId,
-            @RequestParam String conversationId,
             @RequestParam String newContent
     ){
-        return messageService.updateMessages(userId, conversationId, newContent);
+        return messageService.updateMessages(messageId, userId, newContent);
     }
     @Operation(summary = "deleting messages", description = "delete messages by id")
     @DeleteMapping("/message")
     public String deleteMessage(
-            @RequestParam String userId,
-            @RequestParam String conversationId
+            @RequestParam String messageId,
+            @RequestParam String userId
     ){
-        messageService.deleteMessages(userId, conversationId);
-        return "message deleted";
+        messageService.deleteMessages(messageId, userId);
+        return "messaged deleted";
     }
 
 
