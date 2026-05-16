@@ -17,11 +17,17 @@ logging.level.org.springframework.web=DEBUG
 #spring.security.user.password={noop}admin123
 
 #MAIL
-spring.mail.host=bsbdabvjdbhcavdvhasd
-spring.mail.port=8080
-spring.mail.username=moise
-spring.mail.password=wer45suw
+#spring.mail.host=bsbdabvjdbhcavdvhasd
+#spring.mail.port=8080
+#spring.mail.username=moise
+#spring.mail.password=wer45suw
+
+#ACTUATOR
+#management.endpoints.web.exposure.include=* all actuator's endpoint enabled
+management.endpoints.web.exposure.include=health,beans
+
 
 #SWAGGER
 springdoc.swagger-ui.path=/swagger-ui
-springdoc.api-docs.enabled=true #should be disabled in production
+springdoc.api-docs.enabled=true
+springdoc.show-actuator=true #showing the actuator endpoints on swagger
